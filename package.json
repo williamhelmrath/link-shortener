@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.9.14",
+    "@material-ui/icons": "^4.9.1",
     "dotenv": "^8.2.0",
     "pg": "^8.2.1",
     "pg-hstore": "^2.3.3",
