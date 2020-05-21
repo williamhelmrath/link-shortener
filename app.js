@@ -11,9 +11,14 @@ const run = async () => {
       host: process.env.DATABASE_HOST,
     }
   );
-
-  await sequelize.authenticate();
-  console.log("All good!");
+  try {
+    await sequelize.authenticate();
+    console.log("All good!");
+  } catch {
+    console.error("couldn't reach auth!");
+    console.error("exiting");
+    process.exit(1);
+  }
 };
 
 run();
