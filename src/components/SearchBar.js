@@ -5,17 +5,34 @@ import {
   IconButton,
   InputLabel,
   OutlinedInput,
+  TableBody,
 } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 
 export default function SearchBar() {
   const [searchTerm, setSearchTerm] = useState("");
-
+  const [postResp, setPostResp] = useState(null);
   const updateSearchTerm = (e) => setSearchTerm(e.target.value);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert(searchTerm);
+
+    fetch("/shorten", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ url: searchTerm }),
+    })
+      .then((resp) => {
+        return resp.json();
+      })
+      .then((newUrl) => {
+        setPostResp(newUrl);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
