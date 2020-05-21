@@ -62,8 +62,9 @@ app.get("/:hash", async (req, res) => {
       let original_link = links[0].dataValues.original_link;
       console.log(original_link);
       res.redirect("https://www." + original_link);
+    } else {
+      res.status(404).send("Sorry, that link does not exist");
     }
-    res.status(404).send("Sorry, that link does not exist");
   });
 });
 app.use(express.static(path.join(__dirname, "build")));
