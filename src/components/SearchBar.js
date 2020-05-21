@@ -36,7 +36,11 @@ export default function SearchBar({ handleShorten }) {
                 placeholder="Shorten your link"
                 autoFocus={true}
                 onChange={(e) => updateLink(e)}
-                style={{ marginRight: "1vw" }}
+                style={{
+                  marginRight: "1vw",
+                  background: "white",
+                  width: "40vw",
+                }}
               />
               {!isValid && <FormHelperText error>Invalid Link</FormHelperText>}
             </div>
