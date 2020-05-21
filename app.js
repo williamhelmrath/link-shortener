@@ -18,7 +18,9 @@ app.get("/:hash", async (req, res) => {
       },
     },
   }).then((links) => {
-    console.log(links);
+    let original_link = links[0].dataValues.original_link;
+    console.log(original_link);
+    res.redirect("https://www." + original_link);
   });
 });
 
