@@ -46,12 +46,6 @@ sequelize
     process.exit(1);
   });
 
-// Link.create({ original_link: "youtube.com", shortened_link: "asdf" }).then(
-//   (link) => {
-//     console.log(("ID:", link.id));
-//   }
-// );
-
 module.exports = {
   Link,
 };
