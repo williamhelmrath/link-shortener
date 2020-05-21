@@ -26,7 +26,27 @@ app.post("/shorten/", (req, res) => {
       res.json(err);
     });
 });
-
+app.get("/info/:hash", (req, res) => {
+  const { hash } = req.params;
+  Link.findAll({
+    where: {
+      shortened_link: hash,
+      original_link: {
+        [Op.not]: null,
+      },
+    },
+  }).then((links) => {
+    if (links.length !== 0) {
+      console.log(links);
+      res.status(200);
+      res.contentType("json");
+      res.send(links);
+    } else {
+      res.status(404);
+      res.send("no link info");
+    }
+  });
+});
 app.get("/:hash", async (req, res) => {
   const { hash } = req.params;
   console.log(hash);
