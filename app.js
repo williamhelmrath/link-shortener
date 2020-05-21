@@ -1,24 +1,28 @@
 require("dotenv").config();
 const { Sequelize } = require("sequelize");
+const Op = Sequelize.Op;
+const express = require("express");
+const app = express();
+const { Link } = require("./sequelize");
 
-const run = async () => {
-  const sequelize = new Sequelize(
-    process.env.DATABASE,
-    process.env.DATABASE_USER,
-    process.env.DATABASE_PASSWORD,
-    {
-      dialect: "postgres",
-      host: process.env.DATABASE_HOST,
-    }
-  );
-  try {
-    await sequelize.authenticate();
-    console.log("All good!");
-  } catch {
-    console.error("couldn't reach auth!");
-    console.error("exiting");
-    process.exit(1);
-  }
-};
+// run();
 
-run();
+app.get("/:hash", async (req, res) => {
+  const { hash } = req.params;
+  console.log(hash);
+  Link.findAll({
+    where: {
+      shortened_link: hash,
+      original_link: {
+        [Op.not]: null,
+      },
+    },
+  }).then((links) => {
+    console.log(links);
+  });
+});
+
+let PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
+});
