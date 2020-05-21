@@ -9,12 +9,12 @@ const path = require("path");
 const normalizeUrl = require("normalize-url");
 app.use(express.json());
 
-app.post("/shorten/", (req, res) => {
+app.post("/shorten/", async (req, res) => {
   const url = normalizeUrl(req.body.url, { forceHttps: true });
   console.log(`shortening ${url}`);
   const hash = crypto.createHash("sha1");
   hash.update(url);
-  let shortened = hash.digest("base64").substring(0, 10);
+  let shortened = encodeURI(hash.digest("base64").substring(0, 10));
   console.log(shortened);
   Link.create({ original_link: url, shortened_link: shortened })
     .then((newLink) => {
@@ -27,7 +27,7 @@ app.post("/shorten/", (req, res) => {
       res.json(err);
     });
 });
-app.get("/info/:hash", (req, res) => {
+app.get("/info/:hash", async (req, res) => {
   const { hash } = req.params;
   Link.findAll({
     where: {
