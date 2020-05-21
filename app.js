@@ -14,7 +14,7 @@ app.post("/shorten/", async (req, res) => {
   console.log(`shortening ${url}`);
   const hash = crypto.createHash("sha1");
   hash.update(url);
-  let shortened = encodeURI(hash.digest("base64").substring(0, 10));
+  let shortened = encodeURIComponent(hash.digest("base64").substring(0, 10));
   console.log(shortened);
   Link.create({ original_link: url, shortened_link: shortened })
     .then((newLink) => {
