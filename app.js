@@ -76,4 +76,16 @@ app.get("*", (req, res) => {
 let PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
+  setInterval(() => {
+    console.log("cleaning entries");
+    Link.destroy({
+      where: {
+        updatedAt: {
+          [Op.lt]: Date.now() - 604800000,
+        },
+      },
+    }).then(() => {
+      console.log("cleared");
+    });
+  }, 604800000); //week in ms 604800000
 });
