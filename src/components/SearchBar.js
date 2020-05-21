@@ -1,25 +1,55 @@
 import React, { useState } from "react";
-import { FormControl, OutlinedInput } from "@material-ui/core";
+import {
+  FormControl,
+  OutlinedInput,
+  Button,
+  FormHelperText,
+} from "@material-ui/core";
+
+const validUrl = require("valid-url");
 
 export default function SearchBar({ handleShorten }) {
   const [link, setLink] = useState("");
-  const updateLink = (e) => setLink(e.target.value);
+  const [isValid, setIsValid] = useState(true);
+  const updateLink = (e) => {
+    setLink(e.target.value);
+    if (!isValid) setIsValid(true);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    handleShorten(link);
+    if (validUrl.isWebUri(link)) handleShorten(link);
+    else setIsValid(false);
   };
 
   return (
-    <div style={{ display: "flex", justifyContent: "center" }}>
+    <div>
       <form onSubmit={handleSubmit}>
         <FormControl variant="outlined">
-          <OutlinedInput
-            id="outlined-adornment-search"
-            type="text"
-            autoFocus={true}
-            onChange={(e) => updateLink(e)}
-          />
+          <div style={{ display: "flex", alignItems: "flex-start" }}>
+            <div>
+              <OutlinedInput
+                id="outlined-adornment-search"
+                error={!isValid}
+                helperText="Invalid link"
+                type="text"
+                placeholder="Shorten your link"
+                autoFocus={true}
+                onChange={(e) => updateLink(e)}
+                style={{ marginRight: "1vw" }}
+              />
+              {!isValid && <FormHelperText error>Invalid Link</FormHelperText>}
+            </div>
+            <Button
+              variant="contained"
+              color="primary"
+              disabled={link.length === 0}
+              onClick={(e) => handleSubmit(e)}
+              style={{ height: "57px" }}
+            >
+              Shorten
+            </Button>
+          </div>
         </FormControl>
       </form>
     </div>

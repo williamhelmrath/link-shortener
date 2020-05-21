@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import SearchBar from "./components/SearchBar";
 import Navbar from "./components/Navbar";
 import Paper from "@material-ui/core/Paper";
+import CssBaseline from "@material-ui/core/CssBaseline";
 import "./App.css";
 
 export default function App() {
@@ -27,23 +28,34 @@ export default function App() {
   };
 
   return (
-    <div>
+    <CssBaseline>
       <Navbar />
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <Paper variant="outlined" style={{ maxWidth: "40vw" }}>
-          Have a long-ass link that you need to shorten? Let Bro Shortener do
-          the heavy lifting for you!
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          flexDirection: "column",
+        }}
+      >
+        <Paper
+          variant="outlined"
+          style={{ maxWidth: "70vw", marginBottom: "2vh" }}
+        >
+          <h1>
+            Have a long-ass link that you need to shorten? Let Bro Shortener do
+            the heavy lifting for you!
+          </h1>
         </Paper>
-        <div>
-          <h1>Shorten your link!</h1>
-          <SearchBar handleShorten={handleShorten} />
-        </div>
+
+        <SearchBar handleShorten={handleShorten} />
+
+        {postResp && (
+          <h1>
+            Your new link is: bro-shortener.herokuapp.com/
+            {postResp.shortened_link}
+          </h1>
+        )}
       </div>
-      {postResp && (
-        <h1>
-          Your new link is: broshortener.herokuapp.com/{postResp.shortened_link}
-        </h1>
-      )}
-    </div>
+    </CssBaseline>
   );
 }
