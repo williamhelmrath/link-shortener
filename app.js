@@ -1,5 +1,13 @@
 require("dotenv").config();
 const { Sequelize } = require("sequelize");
+const express = require("express");
+const app = express();
+const path = require("path");
+
+app.post("/shorten/:url", (req, res) => {
+  const { url } = req.params;
+  console.log(`shortening ${url}`);
+});
 
 const run = async () => {
   const sequelize = new Sequelize(
@@ -20,5 +28,14 @@ const run = async () => {
     process.exit(1);
   }
 };
+
+app.use(express.static(path.join(__dirname, "build")));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build/index.html"));
+});
+
+app.listen(process.env.PORT || 8080, () => {
+  console.log(`Server listening on port ${process.env.PORT || 8080}`);
+});
 
 run();
