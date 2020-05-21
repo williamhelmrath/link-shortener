@@ -16,7 +16,6 @@ app.post("/shorten/", (req, res) => {
   console.log(shortened);
   Link.create({ original_link: url, shortened_link: shortened })
     .then((newLink) => {
-      console.log(newLink);
       res.status(200);
       res.json(newLink);
     })
