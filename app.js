@@ -5,6 +5,7 @@ const express = require("express");
 const app = express();
 const { Link } = require("./sequelize");
 const crypto = require("crypto");
+const path = require("path");
 app.use(express.json());
 
 app.post("/shorten/", (req, res) => {
@@ -44,6 +45,10 @@ app.get("/:hash", async (req, res) => {
     }
     res.status(404).send("Sorry, that link does not exist");
   });
+});
+app.use(express.static(path.join(__dirname, "build")));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build/index.html"));
 });
 
 let PORT = process.env.PORT || 8080;
