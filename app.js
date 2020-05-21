@@ -18,7 +18,12 @@ app.get("/:hash", async (req, res) => {
       },
     },
   }).then((links) => {
-    console.log(links);
+    if (links.length !== 0) {
+      let original_link = links[0].dataValues.original_link;
+      console.log(original_link);
+      res.redirect("https://www." + original_link);
+    }
+    res.status(404).send("Sorry, that link does not exist");
   });
 });
 
