@@ -10,7 +10,7 @@ const normalizeUrl = require("normalize-url");
 app.use(express.json());
 
 app.post("/shorten/", (req, res) => {
-  const url = normalizeUrl(req.body.url);
+  const url = normalizeUrl(req.body.url, { forceHttps: true });
   console.log(`shortening ${url}`);
   const hash = crypto.createHash("sha1");
   hash.update(url);
