@@ -6,10 +6,11 @@ const app = express();
 const { Link } = require("./sequelize");
 const crypto = require("crypto");
 const path = require("path");
+const normalizeUrl = require("normalize-url");
 app.use(express.json());
 
 app.post("/shorten/", (req, res) => {
-  const { url } = req.body;
+  const url = normalizeUrl(req.body.url);
   console.log(`shortening ${url}`);
   const hash = crypto.createHash("sha1");
   hash.update(url);
@@ -61,7 +62,7 @@ app.get("/:hash", async (req, res) => {
     if (links.length !== 0) {
       let original_link = links[0].dataValues.original_link;
       console.log(original_link);
-      res.redirect("https://www." + original_link);
+      res.redirect(original_link);
     } else {
       res.status(404).send("Sorry, that link does not exist");
     }
